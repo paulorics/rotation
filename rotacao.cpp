@@ -20,8 +20,6 @@ int main(){
     cin >> ga[1];
     cout << "Insira o valor da velocidade angular inicial gz:\n ";
     cin >> ga[2];
-    
-    //ga[0] = 0.7854, ga[1] = 0, ga[2] = 0; // Velocidade ângular em torno de X (rad/s)
 
     // PRODUTO ENTRE Qa * gi (QuaternionAtual x giroatual)
     float QiG0; // Linha 1 do produto entre Q x Ga (Matriz)
@@ -36,7 +34,6 @@ int main(){
 
     // VELOCIDADES ÂNGULARES ATUAIS Gi+1
     float gf[3]; gf[0] = 0; gf[1] = 0; gf[2] = 0;
-    //gf[0] = 0.7854, gf[1] = 0, gf[0] = 0;
     // ENTRADA DE DADOS
     cout << "Insira o valor da velocidade angular atual medida pelo sensor (gx):\n ";
     cin >> gf[0];
@@ -50,11 +47,11 @@ int main(){
     as[0] = 0; as[1] = 0; as[2] = 0;
     
     // ENTRADA DE DADOS
-    cout << "Insira o valor da velocidade angular atual medida pelo sensor (axs):\n ";
+    cout << "Insira o valor da aceleração atual medida pelo sensor (axs):\n ";
     cin >> as[0];
-    cout << "Insira o valor da velocidade angular atual medida pelo sensor (ays):\n ";
+    cout << "Insira o valor da aaceleração atual medida pelo sensor (ays):\n ";
     cin >> as[1];
-    cout << "Insira o valor da velocidade angular atual medida pelo sensor (azs):\n ";
+    cout << "Insira o valor da aceleração atual medida pelo sensor (azs):\n ";
     cin >> as[2];
 
     // MÉDIA DAS VELOCIDADES ANGULARES EM DOIS INTERVALOS DE TEMPO
