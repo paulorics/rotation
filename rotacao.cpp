@@ -7,7 +7,7 @@ int main(){
     //----------- DECLARANDO VARIÁVEIS -----------------//
     float dt; dt = 1; // Intervalo de amostragem de 1s
     float qa[4]; // Quaternion anterior
-    qa[0] = 1; qa[1] = 0; qa[2] = 0; qa[3] = 0; // Quaternion inicial para teste (ROTACIONA -90)
+    qa[0] = 1; qa[1] = 0; qa[2] = 0; qa[3] = 0; // Quaternion inicial (ângulo 0)
 
     float qf[4]; // QUATERNION ATUAL Qi+1
 
