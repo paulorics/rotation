@@ -1,5 +1,3 @@
-#include<stdio.h>
-#include<stdlib.h>
 #include <iostream>
 #include<math.h>
 #define PI = 3.1415;
@@ -127,7 +125,6 @@ int main(){
     qf[1] = qa[1]+dt/6*(K1i+2*K2i+2*K3i+K4i);
     qf[2] = qa[2]+dt/6*(K1j+2*K2j+2*K3j+K4j);
     qf[3] = qa[3]+dt/6*(K1k+2*K2k+2*K3k+K4k);
-    printf("A aceleracao as[0] = axsensor e: %f \n", as[0]);
 
     // --------- MATRIZ DE ROTAÇÃO ---------
     float MR[3][3];
@@ -146,13 +143,11 @@ int main(){
     acterra[0] = MR[0][0] * as[0] + MR[0][1] * as[1]  + MR[0][2] * as[2];
     acterra[1] = MR[1][0] * as[0] + MR[1][1] * as[1] + MR[1][2] * as[2];
     acterra[2] = MR[2][0] * as[0] + MR[2][1] * as[1] + MR[2][2] * as[2];
+    cout << "Aceleracoes no sistema de coordenadas global" << endl;
+    cout << "A aceleracao ax e: \n" << acterra[0] << endl;
+    cout << "A aceleracao ay e: \n" << acterra[1] << endl;
+    cout << "A aceleracao az e: \n" << acterra[2] << endl;
 
-    printf("Aceleracoes no sistema de coordenadas global \n");
-    printf("A aceleracao ax e: %f \n", acterra[0]);
-    printf("A aceleracao ay e: %f \n", acterra[1]);
-    printf("A aceleracao az e: %f \n", acterra[2]);
-    printf("A aceleracao as[0] = axsensor e: %f \n", as[0]);
     system("pause");
-    printf("");
     return(0);
 }
