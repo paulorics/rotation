@@ -6,12 +6,12 @@ using namespace std;
 int main(){
     //----------- DECLARANDO VARIÁVEIS -----------------//
     float dt; dt = 1; // Intervalo de amostragem de 1s
-    float qa[4]; // Quaternion anterior
+    float qa[4]; // Quaternion anterior qi-1
     qa[0] = 1; qa[1] = 0; qa[2] = 0; qa[3] = 0; // Quaternion inicial (ângulo 0)
 
-    float qf[4]; // QUATERNION ATUAL Qi+1
+    float qf[4]; // QUATERNION ATUAL qi
 
-    float ga[3]; // VELOCIDADES ÂNGULARES ANTERIORES Qi
+    float ga[3]; // VELOCIDADES ÂNGULARES ANTERIORES gi-1
     ga[0] = 0; ga[1] = 0; ga[2] = 0;
     // ENTRADA DE DADOS
     cout << "Insira o valor da velocidade angular inicial gx:\n ";
@@ -21,18 +21,18 @@ int main(){
     cout << "Insira o valor da velocidade angular inicial gz:\n ";
     cin >> ga[2];
 
-    // PRODUTO ENTRE Qa * gi (QuaternionAtual x giroatual)
-    float QiG0; // Linha 1 do produto entre Q x Ga (Matriz)
-    float QiGi; // Linha 2 do produto entre Q x Ga (Matriz)
-    float QiGj; // Linha 3 do produto entre Q x Ga (Matriz)
-    float QiGk; // Linha 4 do produto entre Q x Ga (Matriz)
+    // PRODUTO ENTRE qa * gi-1 (QuaternionAnterior x giroanterior)
+    float QiG0; // Linha 1 do produto entre qi-1 x gi-1 (Matriz)
+    float QiGi; // Linha 2 do produto entre qi-1 x gi-1 (Matriz)
+    float QiGj; // Linha 3 do produto entre qi-1 x gi-1 (Matriz)
+    float QiGk; // Linha 4 do produto entre qi-1 x gi-1 (Matriz)
     
     QiG0 = -qa[1]*ga[0]-qa[2]*ga[1]-qa[3]*ga[2];
     QiGi = qa[0]*ga[0]-qa[3]*ga[1]+qa[2]*ga[2];
     QiGj = qa[3]*ga[0]+qa[0]*ga[1]-qa[1]*ga[2];
     QiGk = -qa[2]*ga[0]+qa[1]*ga[1]+qa[0]*ga[2];
 
-    // VELOCIDADES ÂNGULARES ATUAIS Gi+1
+    // VELOCIDADES ÂNGULARES ATUAIS Gi
     float gf[3]; gf[0] = 0; gf[1] = 0; gf[2] = 0;
     // ENTRADA DE DADOS
     cout << "Insira o valor da velocidade angular atual medida pelo sensor (gx):\n ";
@@ -42,7 +42,7 @@ int main(){
     cout << "Insira o valor da velocidade angular atual medida pelo sensor (gz):\n ";
     cin >> gf[2];
     
-    // ACELERAÇÕES OBTIDAS PELO SENSOR
+    // ACELERAÇÕES OBTIDAS PELO SENSOR ATUAIS
     float as[3]; 
     as[0] = 0; as[1] = 0; as[2] = 0;
     
@@ -54,7 +54,7 @@ int main(){
     cout << "Insira o valor da aceleração atual medida pelo sensor (azs):\n ";
     cin >> as[2];
 
-    // MÉDIA DAS VELOCIDADES ANGULARES EM DOIS INTERVALOS DE TEMPO
+    // MÉDIA DAS VELOCIDADES ANGULARES EM DOIS INTERVALOS DE TEMPO (gi-1 + gi)/2
     float gm[3]; gm[0] = 0; gm[1] = 0; gm[2] = 0;
     gm[0] = (ga[0] + gf[0]) / 2;
     gm[1] = (ga[1] + gf[1]) / 2;
