@@ -52,20 +52,13 @@ int main(){
     as[0] = 0; as[1] = 0; as[2] = 0;
     
     // ENTRADA DE DADOS
-    printf("Insira o valor da velocidade angular atual medida pelo sensor (axs):\n ");
-    scanf("%f",&as[0]);
-    printf("Insira o valor da velocidade angular atual medida pelo sensor (ays):\n ");
-    scanf("%f",&as[1]);
-    printf("Insira o valor da velocidade angular atual medida pelo sensor (azs):\n ");
-    scanf("%f",&as[2]);
-    /*
     cout << "Insira o valor da velocidade angular atual medida pelo sensor (axs):\n ";
     cin >> as[0];
     cout << "Insira o valor da velocidade angular atual medida pelo sensor (ays):\n ";
     cin >> as[1];
     cout << "Insira o valor da velocidade angular atual medida pelo sensor (azs):\n ";
     cin >> as[2];
-    */
+
     // MÉDIA DAS VELOCIDADES ANGULARES EM DOIS INTERVALOS DE TEMPO
     float gm[3]; gm[0] = 0; gm[1] = 0; gm[2] = 0;
     gm[0] = (ga[0] + gf[0]) / 2;
@@ -134,24 +127,25 @@ int main(){
     qf[1] = qa[1]+dt/6*(K1i+2*K2i+2*K3i+K4i);
     qf[2] = qa[2]+dt/6*(K1j+2*K2j+2*K3j+K4j);
     qf[3] = qa[3]+dt/6*(K1k+2*K2k+2*K3k+K4k);
+    printf("A aceleracao as[0] = axsensor e: %f \n", as[0]);
 
     // --------- MATRIZ DE ROTAÇÃO ---------
     float MR[3][3];
-    MR[1][1] = pow(qf[0],2)+pow(qf[1],2)-pow(qf[2],2)-pow(qf[3],2);
-    MR[1][2] = 2*(qf[1]*qf[2]-qf[3]*qf[0]); 
-    MR[1][3] = 2*(qf[1]*qf[3]+qf[2]*qf[0]);
-    MR[2][1] = 2*(qf[1]*qf[2]+qf[3]*qf[0]);
-    MR[2][2] = pow(qf[0],2)-pow(qf[1],2)+pow(qf[2],2)-pow(qf[3],2);
-    MR[2][3] = 2*(qf[2]*qf[3]-qf[0]*qf[1]);
-    MR[3][1] = 2*(qf[1]*qf[3]-qf[2]*qf[0]);
-    MR[3][2] = 2*(qf[0]*qf[1]+qf[2]*qf[3]); 
-    MR[3][3] = pow(qf[0],2)-pow(qf[1],2)-pow(qf[2],2)+pow(qf[3],2);
-
+    MR[0][0] = pow(qf[0], 2) + pow(qf[1], 2) - pow(qf[2], 2) - pow(qf[3], 2);
+    MR[0][1] = 2 * (qf[1] * qf[2] - qf[3] * qf[0]); 
+    MR[0][2] = 2 * (qf[1] * qf[3] + qf[2] * qf[0]);
+    MR[1][0] = 2 * (qf[1] * qf[2] + qf[3] * qf[0]);
+    MR[1][1] = pow(qf[0], 2) - pow(qf[1], 2) + pow(qf[2], 2) - pow(qf[3], 2);
+    MR[1][2] = 2 * (qf[2] * qf[3] - qf[0] * qf[1]);
+    MR[2][0] = 2 * (qf[1] * qf[3] - qf[2] * qf[0]);
+    MR[2][1] = 2 * (qf[0] * qf[1] + qf[2] * qf[3]); 
+    MR[2][2] = pow(qf[0], 2) - pow(qf[1], 2) - pow(qf[2], 2) + pow(qf[3], 2);
+    
     // --------- ACELERAÇÕES NO SISTEMA GLOBAL ------//
     float acterra[3];
-    acterra[0] = MR[1][1] * as[0] + MR[1][2] * as[1]  + MR[1][3] * as[2];
-    acterra[1] = MR[2][1] * as[0] + MR[2][2] * as[1] + MR[2][3] * as[2];
-    acterra[2] = MR[3][1] * as[0] + MR[3][2] * as[1] + MR[3][3] * as[2];
+    acterra[0] = MR[0][0] * as[0] + MR[0][1] * as[1]  + MR[0][2] * as[2];
+    acterra[1] = MR[1][0] * as[0] + MR[1][1] * as[1] + MR[1][2] * as[2];
+    acterra[2] = MR[2][0] * as[0] + MR[2][1] * as[1] + MR[2][2] * as[2];
 
     printf("Aceleracoes no sistema de coordenadas global \n");
     printf("A aceleracao ax e: %f \n", acterra[0]);
