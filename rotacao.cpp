@@ -15,7 +15,7 @@ int main(){
     float ga[3]; // VELOCIDADES ÂNGULARES ANTERIORES gi-1
     ga[0] = 0; ga[1] = 0; ga[2] = 0;
 
-    // VELOCIDADE ÂNGULAR EM GRAUS/s (PARA TESTES)............................
+    // VELOCIDADE ÂNGULAR EM GRAUS/S (PARA TESTES)............................
     // ENTRADA DE DADOS
     float graus[3];
     cout << "Insira o valor da velocidade angular inicial gx (EM GRAUS/S):\n ";
@@ -30,7 +30,7 @@ int main(){
     ga[2] = graus[2] * PI / 180;
     //..................................................
 
-    // PRODUTO ENTRE qa * gi-1 (QuaternionAnterior x giroanterior)
+    // PRODUTO ENTRE qi-1 * gi-1 (QuaternionAnterior x giroanterior)
     float QiG0; // Linha 1 do produto entre qi-1 x gi-1 (Matriz)
     float QiGi; // Linha 2 do produto entre qi-1 x gi-1 (Matriz)
     float QiGj; // Linha 3 do produto entre qi-1 x gi-1 (Matriz)
@@ -59,7 +59,7 @@ int main(){
 
     //.................................
     
-    // ACELERAÇÕES OBTIDAS PELO SENSOR ATUAIS
+    // ACELERAÇÕES OBTIDAS PELO SENSOR (ATUAIS)
     float as[3]; 
     as[0] = 0; as[1] = 0; as[2] = 0;
     
@@ -155,11 +155,15 @@ int main(){
     // REMOÇÃO DAS COMPONENTES DA GRAVIDADE DO BODY FRAME
 
     float qfg[4]; //Quaternion para encontrar as componentes da gravidade no BODY FRAME
-    qfg[0] = qf[0]; qfg[1] = - qf[1]; qfg[2] = - qf[2]; qfg[3] = - qf[3];
+    qfg[0] = qf[0]; 
+    qfg[1] = - qf[1]; 
+    qfg[2] = - qf[2]; 
+    qfg[3] = - qf[3];
+
     float Gcomp[3]; //Componentes gx', gy', gz'
-    Gcomp[0] = (2 * (qfg[0] * qfg[2] + qfg[1] * qfg[3])) * G;
-    Gcomp[1] = (2 * (qfg[2] * qfg[3] - qfg[0] * qfg[1])) * G;
-    Gcomp[2] = (pow(qfg[0], 2) - pow(qfg[1], 2) - pow(qfg[2], 2) - pow(qfg[3], 2)) * G;
+    Gcomp[0] = (2 * (qfg[0] * qfg[2] + qfg[1] * qfg[3])) * G; //Componente gx'
+    Gcomp[1] = (2 * (qfg[2] * qfg[3] - qfg[0] * qfg[1])) * G; //Componente gy'
+    Gcomp[2] = (pow(qfg[0], 2) - pow(qfg[1], 2) - pow(qfg[2], 2) + pow(qfg[3], 2)) * G; //Componente gz'
 
     as[0] = as[0] - Gcomp[0]; // Aceleração gx' no bodyframe sem a gravidade
     as[1] = as[1] - Gcomp[1]; // Aceleração gy' no bodyframe sem a gravidade
