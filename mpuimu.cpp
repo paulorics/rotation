@@ -1,7 +1,6 @@
 #include <I2Cdev.h>
 #include <MPU6050.h>
 #include <Wire.h>
-#define G 9.806;
 
 MPU6050 accelgyro;
 
@@ -16,7 +15,7 @@ float roll = 0, pitch = 0, yaw = 0; // ÂNGULO FILTRADO
 const float alpha = 0.97; // PARÂMETRO DO FILTRO COMPLEMENTAR
 
 unsigned long currentTime = 0; // VARIÁVEL PARA REALIZAR AMOSTRAGEM
-float dt = 5000; //0,005s  // INTERVALO DE AMOSTRAGEM
+float dt = 5000; //0,005s  // INTERVALO DE AMOSTRAGEM (200Hz)
 unsigned long previoustime = 0; // VARIÁVEL PARA REALIZAR AMOSTRAGEM
 
 void setup() {
@@ -27,12 +26,12 @@ void setup() {
   
   accelgyro.initialize();
   // CALIBRAÇÃO (OFFSETS)
-  accelgyro.setXGyroOffset(-14);
+  accelgyro.setXGyroOffset(-16);
   accelgyro.setYGyroOffset(41);
-  accelgyro.setZGyroOffset(16);
-  accelgyro.setXAccelOffset(308);
-  accelgyro.setYAccelOffset(-2011);
-  accelgyro.setZAccelOffset(1861);
+  accelgyro.setZGyroOffset(22);
+  accelgyro.setXAccelOffset(334);
+  accelgyro.setYAccelOffset(-1979);
+  accelgyro.setZAccelOffset(1869);
   
   // INICIALIZAÇÃO DA DO SENSOR
   Serial.println("Initializing I2C devices...");
@@ -51,9 +50,9 @@ void loop() {
     // LEITURA DAS ACELERAÇÕES E DAS VELOCIDADES ÂNGULARES E ARMAZENAMENTO EM (ax, ay, az, gx, gy, gz)
     accelgyro.getMotion6(&ax, &ay, &az, &gx, &gy, &gz);
 
-    acX = (ax / 16384.0) * G;
-    acY = (ay / 16384.0) * G;
-    acZ = (az / 16384.0) * G;
+    acX = (ax / 16384.0) * 9.806;
+    acY = (ay / 16384.0) * 9.806;
+    acZ = (az / 16384.0) * 9.806;
     giroX = (gx / 131.0);
     giroY = (gy / 131.0);
     giroZ = (gz / 131.0);
