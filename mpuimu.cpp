@@ -1,6 +1,7 @@
 #include <I2Cdev.h>
 #include <MPU6050.h>
 #include <Wire.h>
+#define G 9.806;
 
 MPU6050 accelgyro;
 
@@ -50,9 +51,9 @@ void loop() {
     // LEITURA DAS ACELERAÇÕES E DAS VELOCIDADES ÂNGULARES E ARMAZENAMENTO EM (ax, ay, az, gx, gy, gz)
     accelgyro.getMotion6(&ax, &ay, &az, &gx, &gy, &gz);
 
-    acX = (ax / 16384.0) * 9.806;
-    acY = (ay / 16384.0) * 9.806;
-    acZ = (az / 16384.0) * 9.806;
+    acX = (ax / 16384.0) * G;
+    acY = (ay / 16384.0) * G;
+    acZ = (az / 16384.0) * G;
     giroX = (gx / 131.0);
     giroY = (gy / 131.0);
     giroZ = (gz / 131.0);
