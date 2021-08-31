@@ -42,7 +42,8 @@ int main(){
     QiGk = - qa[2] * ga[0] + qa[1] * ga[1] + qa[0] * ga[2];
 
     // VELOCIDADES ÂNGULARES ATUAIS Gi
-    float gf[3]; gf[0] = 0; gf[1] = 0; gf[2] = 0;
+    float gf[3]; 
+    gf[0] = 0; gf[1] = 0; gf[2] = 0;
     // ENTRADA DE DADOS
     // VELOCIDADE ÂNGULAR EM GRAUS/s (PARA TESTES)...............................
     float grausf[3];
@@ -102,7 +103,7 @@ int main(){
     K2 = - q1k2 * gm[0] - q2k2 * gm[1] - q3k2 * gm[2];
     K2i = q0k2 * gm[0] - q3k2 * gm[1] + q2k2 * gm[2];
     K2j = q3k2 * gm[0] + q0k2 * gm[1] - q1k2 * gm[2];
-    K2k = - q2k2 * gm[0] + q1k2*gm[1] + q0k2 * gm[2];
+    K2k = - q2k2 * gm[0] + q1k2 * gm[1] + q0k2 * gm[2];
 
     // K3 (K3 = 1/2 * [Qi + K2/2 * dt] x Gi+0.5  Derivada do Quaternion no instante i+0.5
     // Equação ---> 1/2*(Qi+K2/2*dt)
