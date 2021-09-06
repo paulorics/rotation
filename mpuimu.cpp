@@ -9,7 +9,6 @@ int16_t ax, ay, az;
 int16_t gx, gy, gz;
 float acX, acY, acZ;
 float giroX, giroY, giroZ; // VELOCIDADES ANGULARES
-float ga[3] = {0, 0, 0}; // VELOCIDADES ÂNGULARES ANTERIORES gi-1
 
 unsigned long currentTime = 0; // VARIÁVEL PARA REALIZAR AMOSTRAGEM
 float dT = 5000; // INTERVALO DE AMOSTRAGEM EM MICROS
@@ -17,7 +16,7 @@ float dt = 0.005; //0,005s  // INTERVALO DE AMOSTRAGEM (200Hz)
 unsigned long previoustime = 0; // VARIÁVEL PARA REALIZAR AMOSTRAGEM
 
 // ------- VARIÁVEIS PARA ENCONTRAR qf --------- //
-float qa[4]; // Quaternion anterior qi-1
+float qa[4] = {1, 0, 0, 0}; // Quaternion anterior qi-1
 float qf[4]; // QUATERNION ATUAL qi
 // PRODUTO ENTRE qi-1 * gi-1 (QuaternionAnterior x giroanterior)
 float QiG0; // Linha 1 do produto entre qi-1 x gi-1 (Matriz)
@@ -25,6 +24,7 @@ float QiGi; // Linha 2 do produto entre qi-1 x gi-1 (Matriz)
 float QiGj; // Linha 3 do produto entre qi-1 x gi-1 (Matriz)
 float QiGk; // Linha 4 do produto entre qi-1 x gi-1 (Matriz)
 float as[3]; // Acelerações do sensor
+float ga[3] = {0, 0, 0}; // VELOCIDADES ÂNGULARES ANTERIORES gi-1
 float gf[3]; // VELOCIDADES ÂNGULARES ATUAIS Gi
 float gm[3]; // MÉDIA DAS VELOCIDADES ANGULARES EM DOIS INTERVALOS DE TEMPO (gi-1 + gi)/2
 float K1, K1i, K1j, K1k; // K1 (K1 = 1/2 * Qi x Gi) Derivada do Quaternion no instante i
@@ -55,11 +55,11 @@ void setup() {
   accelgyro.setZAccelOffset(1869);
   
   // INICIALIZAÇÃO DA DO SENSOR
-  Serial.println("Initializing I2C devices...");
+  Serial.println("Inicializando a conecção I2c...");
  
   // VERIFICAÇÃO DA CONEXÃO
-  Serial.println("Testing device connections...");
-  Serial.println(accelgyro.testConnection() ? "MPU6050 connection successful" : "MPU6050 connection failed");
+  Serial.println("Testando a conexão do dispositivo...");
+  Serial.println(accelgyro.testConnection() ? "MPU6050 conecção realizada com sucesso" : "MPU6050 conecção falhou");
   previoustime = micros();
 }
 
@@ -104,8 +104,6 @@ void loop() {
       Serial.print("\t");
       Serial.println(giroZ);
     */
-    
-    qa[0] = 1; qa[1] = 0; qa[2] = 0; qa[3] = 0; // Quaternion inicial (ângulo 0)
     
     QiG0 = - qa[1] * ga[0] - qa[2] * ga[1] - qa[3] * ga[2];
     QiGi = qa[0] * ga[0] - qa[3] * ga[1] + qa[2] * ga[2];
@@ -209,8 +207,10 @@ void loop() {
     ///*
     Serial.print(acterra[0]); Serial.print(" ");
     Serial.print(acterra[1]); Serial.print(" ");
+    //Serial.print(acterra[1]); Serial.print(" ");
     Serial.println(acterra[2]);
     //*/
     ga[0] = gf[0]; ga[1] = gf[1]; ga[2] = gf[2];
+    qa[0] = qf[0]; qa[1] = qf[1]; qa[2] = qf[2]; qa[3] = qf[3]; 
     }
 }
