@@ -298,7 +298,7 @@ void loop() {
 
 // CÁLCULO DO COMPRIMENTO DA PASSADA
 float distancia(float *AcX) {
-  if (micros() >= 10000000) { // Verificar se passou 10s
+  if (micros() >= 1000000) { // Verificar se passou 1s
     v[1] = ((AcX[0] + AcX[1]) * (dt) / 2); // Velocidade utilizando integração trapezóidal A = (b+B)*h/2
     AcX[0] = AcX[1];  // Aceleração anterior será a atual
     desloc = ((v[0] + v[1]) * (dt) / 2);  // Integração trapezóidal da Velocidade (Obtém distância)
