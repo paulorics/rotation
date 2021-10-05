@@ -289,7 +289,7 @@ void loop() {
     }
     Serial.print("Distância na direção X: ");
     Serial.print(dist);
-    Serial.print("\t" "m");
+    Serial.println("\t" "m");
     //*/
   }
 }
