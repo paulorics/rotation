@@ -293,6 +293,7 @@ Act[1] = acterra[0];
     Serial.print("\t" "m");  Serial.print(" "); Serial.println(Act[1]); 
 //*/
 }
+}
 
 //-----FUNÇÕES------ //
 
