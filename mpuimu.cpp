@@ -298,7 +298,7 @@ Act[1] = acterra[0];
 
 
 // CÁLCULO DO COMPRIMENTO DA PASSADA
-float distancia(float *AcX) {
+float distancia(float *Act) {
   if (micros() >= 1000000) { // Utilizar sensor de pressão como filtro (Se Pressão < X)
     
     // INTEGRAÇÃO NUMÉRICA --- METÓDO DOS TRAPÉZIOS
