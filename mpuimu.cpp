@@ -18,12 +18,12 @@ float numbersx[n], numbersy[n], numbersz[n], numbersgx[n], numbersgy[n], numbers
 
 // CÁLCULO DA DISTÂNCIA
 float v[2] = {0, 0};    // Vetor que armazena as velocidades da IMU (Vn-1 e Vn)
-float desloc, dist;     // Deslocamento a cada aceleração obtida e distância total [soma dos deslocamentos].
-float AcX[2] = {0, 0}; // Variável auxiliar aceleração em X
+float dist[2] = {0, 0};     // Deslocamento a cada aceleração obtida e distância total [soma dos deslocamentos].
+float Act[2] = {0, 0}; // Variável auxiliar aceleração em X
 
 // AMOSTRAGEM
-float dT = 10000; // INTERVALO DE AMOSTRAGEM EM MICROS
-float dt = 0.01; //0,01 SEGUNDOS (100Hz)
+float dT = 12500; // INTERVALO DE AMOSTRAGEM EM MICROS
+float dt = 0.0125; //0,0125s  // INTERVALO DE AMOSTRAGEM (80Hz)
 unsigned long currentTime = 0; // VARIÁVEL PARA REALIZAR AMOSTRAGEM
 unsigned long previoustime = 0; // VARIÁVEL PARA REALIZAR AMOSTRAGEM
 
@@ -282,32 +282,42 @@ void loop() {
     ga[0] = gf[0]; ga[1] = gf[1]; ga[2] = gf[2]; // Gi-1 = Gf (Atualiza velocidade ângular)
     qa[0] = qf[0]; qa[1] = qf[1]; qa[2] = qf[2]; qa[3] = qf[3]; // qi-1 = qf (Atualiza quaternion)
 
-    ///* // ENVIO DAS ACELERAÇÕES PARA FUNÇÃO DISTÂNCIA
-    AcX[1] = abs(acterra[0]);
-    if (AcX[1] > 0.1) {   //  Condição para evitar ruídos
-      distancia(AcX); // Envio das acelerações para função distância
+Act[1] = acterra[0];
+    
+///*  // ENVIO DAS ACELERAÇÕES PARA FUNÇÃO DISTÂNCIA
+    if (abs(Act[1]) > 0.1) {   //  Condição para evitar ruídos
+      distancia(Act); // Envio da aceleração para a função distancia
     }
     Serial.print("Distância na direção X: ");
-    Serial.print(dist);
-    Serial.println("\t" "m");
-    //*/
-  }
+    Serial.print(dist[2]);
+    Serial.print("\t" "m");  Serial.print(" "); Serial.println(Act[1]); 
+//*/
 }
 
 //-----FUNÇÕES------ //
 
+
 // CÁLCULO DO COMPRIMENTO DA PASSADA
 float distancia(float *AcX) {
-  if (micros() >= 1000000) { // Verificar se passou 1s
-    v[1] = ((AcX[0] + AcX[1]) * (dt) / 2); // Velocidade utilizando integração trapezóidal A = (b+B)*h/2
-    AcX[0] = AcX[1];  // Aceleração anterior será a atual
-    desloc = ((v[0] + v[1]) * (dt) / 2);  // Integração trapezóidal da Velocidade (Obtém distância)
-    v[0] = v[1]; // Velocidade anterior será a atual
+  if (micros() >= 1000000) { // Utilizar sensor de pressão como filtro (Se Pressão < X)
+    
+    // INTEGRAÇÃO NUMÉRICA --- METÓDO DOS TRAPÉZIOS
+    v[1] = v[0] + ((Act[0] + Act[1]) * (dt) / 2);
+    dist[2] = dist[1] + ((v[0] + v[1]) * (dt) / 2);  // Integração trapezóidal da Velocidade (Obtém distância)
+
+    // RETÂNGULO
+    //v[1] = v[0] + Act[1] * (dt); 
+    //dist[2] = dist[1] + v[1] * (dt); 
+    
+    dist[1] = dist[2]; // ATUALIZA A DISTÂNCIA ANTERIOR
+    v[0] = v[1]; // ATUALIZA A VELOCIDADE ANTERIOR
+    Act[0] = Act[1]; // ATUALIZA A ACELERAÇÃO ANTERIOR
+    
   } else {
-    desloc = 0;
+    dist[2] = 0;
   }
-  dist = desloc + dist; //  Dist é a soma de cada área dos trapézios(deslocamentos)
-  return dist;  // Retorna o deslocamento
+  
+  return dist[2];  // Retorna a distância
 }
 
 
